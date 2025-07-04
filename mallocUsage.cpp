@@ -7,10 +7,6 @@ void foo();
 void main() {
 
 	foo();
-
-
-	
-
 }
 
 void foo() {
