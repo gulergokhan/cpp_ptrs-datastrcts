@@ -3,56 +3,64 @@
 
 using namespace std;
 
-class intList {
+class LList {
+
 private:
 
 	int items[MAXSIZE];
 	int size;
 
+
 public:
 
-	intList() {
-		
+	LList() {
 		this->size = 0;
 	}
 
-	void append(int elem) {
+	void append(int val) {
 
 		if (size < MAXSIZE) {
-            
-			this->items[size] = elem;
+
+			this->items[size] = val;
 			size++;
 		}
 	}
 
 	void printAll()const {
 
-		cout << " list : ";
-		for (int i = 0; i < size - 1; i++) cout << items[i] << "->";
-		cout << items[size - 1];
+		for (int i = 0; i < size; i++) {
+
+			cout << items[i] << "|";
+		}
+
+		cout << endl;
 	}
 
 	bool isMember(int elem)const {
 
-		for (int i = 0; i < size; i++) if (elem == items[i]) return true;
+		for (int i = 0; i < size; i++) {
 
+			if (elem == items[i])
+				return true;
+		}
 		return false;
-
-
 	}
-
 	void deleteAt(int idx) {
 
 		if (idx < size && idx >= 0) {
 
-			for (int i = idx; i < size; i++)
+			for (int i = idx; i < size; i++) {
+
 				items[i] = items[i + 1];
+			}
 
 			size--;
 		}
+
+
 	}
 
-	void deleteElem(int elem) {
+	void deleteVal(int elem) {
 
 		int idx = -1;
 
@@ -65,21 +73,31 @@ public:
 			}
 		}
 
-		if (idx >=0)
+		if (idx >= 0) {
 
-			deleteAt(idx);
+			for (int i = idx; i < size; i++) {
+
+				items[i] = items[i + 1];
+			}
+
+			size--;
+		}
+
+
 	}
 
 	void insertAt(int idx, int elem) {
 
-		if (idx < size && idx >= 0) {
+		if (idx < size&& size >= 0) {
 
-			for (int i = size; i > idx; i--)
+			for (int i = size; i > idx; i--) {
 
 				items[i] = items[i - 1];
-			
+			}
+
 			items[idx] = elem;
 			size++;
+
 		}
 	}
 
@@ -88,11 +106,14 @@ public:
 		size = 0;
 	}
 
+
 };
+
 
 int main() {
 
-	intList staticArray;
+
+	LList staticArray;
 
 	staticArray.append(4);
 	staticArray.append(7);
@@ -112,7 +133,7 @@ int main() {
 	cout << endl << "After inserting -5 on 3.index : " << endl;
 	staticArray.printAll();
 
-	staticArray.deleteElem(-5);
+	staticArray.deleteVal(-5);
 	cout << endl << "After deleting element -5 : " << endl;
 	staticArray.printAll();
 
