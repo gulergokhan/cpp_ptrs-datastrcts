@@ -7,9 +7,7 @@ public:
 
 	int val;
 	Node* next;
-
-
-
+    
 	Node(int _val) {
 
 		this->val = _val;
@@ -18,22 +16,20 @@ public:
 };
 
 class LinkedList {
-
 private:
 
 	Node* head;
 	Node* tail;
-	int count;
+	int count = 1;
 
 public:
 
 	LinkedList(int _val) {
 
-		Node* newNode = new Node(_val);
-	    
-		head = newNode;
-		tail = newNode;
+		Node* node = new Node(_val);
 
+		head = node;
+		tail = node;
 		count = 1;
 	}
 
@@ -44,47 +40,45 @@ public:
 		while (head != NULL) {
 
 			head = head->next;
-
 			delete temp;
-
-			temp = temp->next;
+			temp = head;
 		}
 	}
 
-	void addNode(int _val) {
+	void addNode(int _val){
 
 		Node* newNode = new Node(_val);
-
 
 		if (count == 0) {
 
 			head = newNode;
 			tail = newNode;
+
+			count++;
 		}
 
-		else {
+		else if (count >= 1) {
 
 			tail->next = newNode;
 			tail = newNode;
+
+			count++;
 		}
-
-		count++;
-
-
 	}
 
 	void printAll()const {
 
 		Node* temp = head;
 
-		while (temp->next != NULL) {
+		while (temp->next!= NULL) {
 
 			cout << temp->val << "->";
-
 			temp = temp->next;
 		}
 
-		cout << tail->val << endl;
+		cout << temp->val;
+
+		cout << endl;
 	}
 
 	void deleteLastNode() {
@@ -92,33 +86,32 @@ public:
 		if (count == 0)
 			return;
 
-		else if (count == 1) {
+		if (count == 1) {
 
 			head = NULL;
 			tail = NULL;
-
-			count--;
 		}
 
 		else if (count >= 1) {
-
 			Node* temp1 = head;
 			Node* temp2 = head;
 
-			while (temp2->next != NULL) {
+			while (temp1 != NULL) {
 
-				temp1 = temp2;
+				temp2 = temp1;
 				temp2 = temp2->next;
-
 			}
-
-			tail = temp1;
-			tail->next = NULL;
-			delete temp2;
+			
+			tail = temp2;
+			temp2->next = NULL;
+			delete temp1;
 
 			count--;
 		}
+
+
 	}
+
 
 	void addFirst(int _val) {
 
@@ -138,20 +131,20 @@ public:
 			head = newNode;
 
 			count++;
+
 		}
 	}
 
-
 	void deleteFirst() {
-
+		
 		if (count == 0)
 			return;
 
-		else if (count == 1) {
+		if (count == 1) {
 
 			head = NULL;
 			tail = NULL;
-			
+
 			count--;
 		}
 
@@ -160,6 +153,8 @@ public:
 			Node* temp = head;
 
 			head = head->next;
+			temp->next = NULL;
+
 			delete temp;
 
 			count--;
@@ -169,8 +164,7 @@ public:
 
 	Node* getNode(int idx) {
 
-		if (idx < 0 && idx > count)
-			return NULL;
+	
 
 		Node* temp = head;
 
@@ -182,12 +176,12 @@ public:
 		return temp;
 	}
 
+
 	bool changeNodeValue(int idx, int _val) {
 
 		Node* temp = getNode(idx);
 
 		if (temp != NULL) {
-
 			temp->val = _val;
 			return true;
 		}
@@ -195,18 +189,57 @@ public:
 		return false;
 	}
 
-	void deleteNode(int idx) {
-		
-		if (idx < 0 && idx > count)
-			return;
+	bool insertNode(int idx, int _val) {
 
-		if (idx == 0)
-			deleteFirst();
 
-		else if (idx == count)
-			deleteLastNode();
+		if (idx < 0 && idx >0)
+			return false;
+
+
+		if (count == 0) {
+
+			addFirst(_val);
+			return true;
+		}
+
+		else if (idx == count) {
+
+			addNode(_val);
+			return true;
+		}
+
 
 		else {
+
+			Node* newNode = new Node(_val);
+			Node* temp = getNode(idx - 1);
+
+			newNode->next = temp->next;
+			temp->next = newNode;
+
+			count++;
+
+			return true;
+
+		}
+		
+	}
+
+
+	void deleteNode(int idx) {
+
+		if (count == 0)
+			return;
+
+		if (count == 1) {
+
+			head = NULL;
+			tail = NULL;
+
+			count--;
+		}
+
+		else if (count > 1) {
 
 			Node* del = getNode(idx);
 			Node* temp = getNode(idx - 1);
@@ -216,13 +249,9 @@ public:
 			delete del;
 
 			count--;
-
-			
 		}
-	    
 	}
 };
-
 
 int main() {
 
@@ -235,7 +264,7 @@ int main() {
 	llist->addNode(18);
 	llist->printAll();
 	llist->addFirst(9);
-  cout << "List after addFirst(9) " << endl << endl;
+	cout << "List after addFirst(9)" << endl << endl;
 	llist->printAll();
 	llist->changeNodeValue(3, 21);
 	cout << "List after changeNodeValue(3,21) " << endl << endl;
@@ -246,7 +275,7 @@ int main() {
 	llist->deleteNode(1);
 	cout << "List after deleteNode(1)" << endl << endl;
 	llist->printAll();
-	
+
 
 
 	return 0;
